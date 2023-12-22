@@ -133,36 +133,7 @@ async function run() {
       }
     });
 
-    // // AddTaskCount is for Todo counting product
-    // app.get("/AddTaskTodoCount", async (req, res) => {
-    //   try {
-    //     const count = await AddTask.countDocuments({ status: 'todo' });
-    //     console.log({count})
-    //     res.send({ count });
-    //   } catch (err) {
-    //     console.log("AddTaskCount is for counting product API", err);
-    //   }
-    // });
-    // // AddTaskCount is for ongoing counting product
-    // app.get("/AddTaskOngoingCount", async (req, res) => {
-    //   try {
-    //     const count = await AddTask.countDocuments({ status: 'ongoing' });
-    //     console.log({count})
-    //     res.send({ count });
-    //   } catch (err) {
-    //     console.log("AddTaskCount is for counting product API", err);
-    //   }
-    // });
-    // // AddTaskCount is for complete counting product
-    // app.get("/AddTaskTodoCount", async (req, res) => {
-    //   try {
-    //     const count = await AddTask.countDocuments({ status: 'todo' });
-    //     console.log({count})
-    //     res.send({ count });
-    //   } catch (err) {
-    //     console.log("AddTaskCount is for counting product API", err);
-    //   }
-    // });
+
 
     //  All Posting Task Get By Query AllTask Route
     app.get("/AddTaskQuery", async (req, res) => {
