@@ -133,32 +133,51 @@ async function run() {
       }
     });
 
-    // AddTaskCount is for counting product
-    app.get("/AddTaskCount", async (req, res) => {
-      try {
-        const count = await AddTask.estimatedDocumentCount();
-        res.send({ count });
-      } catch (err) {
-        console.log("AddTaskCount is for counting product API", err);
-      }
-    });
+    // // AddTaskCount is for Todo counting product
+    // app.get("/AddTaskTodoCount", async (req, res) => {
+    //   try {
+    //     const count = await AddTask.countDocuments({ status: 'todo' });
+    //     console.log({count})
+    //     res.send({ count });
+    //   } catch (err) {
+    //     console.log("AddTaskCount is for counting product API", err);
+    //   }
+    // });
+    // // AddTaskCount is for ongoing counting product
+    // app.get("/AddTaskOngoingCount", async (req, res) => {
+    //   try {
+    //     const count = await AddTask.countDocuments({ status: 'ongoing' });
+    //     console.log({count})
+    //     res.send({ count });
+    //   } catch (err) {
+    //     console.log("AddTaskCount is for counting product API", err);
+    //   }
+    // });
+    // // AddTaskCount is for complete counting product
+    // app.get("/AddTaskTodoCount", async (req, res) => {
+    //   try {
+    //     const count = await AddTask.countDocuments({ status: 'todo' });
+    //     console.log({count})
+    //     res.send({ count });
+    //   } catch (err) {
+    //     console.log("AddTaskCount is for counting product API", err);
+    //   }
+    // });
 
     //  All Posting Task Get By Query AllTask Route
     app.get("/AddTaskQuery", async (req, res) => {
       try {
         const data = req.query.level;
-        const page = parseInt(req.query.page);
-        const size = parseInt(req.query.size);
-        const sizeNeedToSkip = (page - 1) * size;
+        
 
         if (data === "All") {
-          const result = await AddTask.find().skip(sizeNeedToSkip).limit(size).toArray();
+          const result = await AddTask.find().toArray();
           res.send(result);
         } else {
           const query = {
             level: data,
           };
-          const result = await AddTask.find(query).skip(sizeNeedToSkip).limit(size).toArray();
+          const result = await AddTask.find(query).toArray();
           res.send(result);
         }
       } catch (error) {
@@ -185,9 +204,9 @@ async function run() {
     });
 
     // update Task By id in Update Route
-    app.patch("/details/:id",verifyToken, async (req, res) => {
+    app.patch("/details", async (req, res) => {
       try {
-        const id = req.params.id;
+        const id = req.query;
         const data = req.body;
         const query = { _id: new ObjectId(id) };
         const options = { upsert: true };
@@ -196,11 +215,27 @@ async function run() {
             PostedUser: data.PostedUser,
             Tittle: data.Tittle,
             level: data.level,
-            Marks: data.Marks,
             Date: data.Date,
             description: data.description,
-            photo: data.photo,
             startDate: data.startDate,
+          },
+        };
+        const result = await AddTask.updateOne(query, updateDoc, options);
+        res.send(result);
+      } catch (error) {
+        console.log("update Task By id in Update Route Route:", error);
+      }
+    });
+    app.patch("/updateStatus", async (req, res) => {
+      try {
+        const id = req.query;
+        const data = req.body;
+        
+        const query = { _id: new ObjectId(id) };
+        const options = { upsert: true };
+        const updateDoc = {
+          $set: {
+            status: data.updateStatus,
           },
         };
         const result = await AddTask.updateOne(query, updateDoc, options);
