@@ -99,42 +99,52 @@ async function run() {
 
     // <-------------------------------General Working API----------------------------------->
 
-    // Assignment Posting By AddAssignment Route
-    app.post("/AddAssignment", async (req, res) => {
+    // Task Posting By AddTask Route
+    app.post("/AddTask", async (req, res) => {
       try {
-        const PostedAssignmentData = req.body;
-        const result = await AddTask.insertOne(PostedAssignmentData);
+        const PostedTaskData = req.body;
+        const result = await AddTask.insertOne(PostedTaskData);
         res.send(result);
       } catch (error) {
-        console.log("Assignment Posting By AddAssignment Route:", error);
+        console.log("Task Posting By AddTask Route:", error);
+      }
+    });
+    // Task Posting By AddTask Route
+    app.post("/AddToOngoingTask", async (req, res) => {
+      try {
+        const PostedTaskData = req.body;
+        const result = await AddTask.insertOne(PostedTaskData);
+        res.send(result);
+      } catch (error) {
+        console.log("Task Posting By AddTask Route:", error);
       }
     });
 
-    //  All Posting Assignment Get in AllAssignment Route
-    app.get("/AddAssignment", async (req, res) => {
+    //  All Posting Task Get in AllTask Route
+    app.get("/AddTask", async (req, res) => {
       try {
         const result = await AddTask.find().toArray();
         res.send(result);
       } catch (error) {
         console.log(
-          "All Posting Assignment Get By AllAssignment Route:",
+          "All Posting Task Get By AllTask Route:",
           error
         );
       }
     });
 
-    // AddAssignmentCount is for counting product
-    app.get("/AddAssignmentCount", async (req, res) => {
+    // AddTaskCount is for counting product
+    app.get("/AddTaskCount", async (req, res) => {
       try {
         const count = await AddTask.estimatedDocumentCount();
         res.send({ count });
       } catch (err) {
-        console.log("AddAssignmentCount is for counting product API", err);
+        console.log("AddTaskCount is for counting product API", err);
       }
     });
 
-    //  All Posting Assignment Get By Query AllAssignment Route
-    app.get("/AddAssignmentQuery", async (req, res) => {
+    //  All Posting Task Get By Query AllTask Route
+    app.get("/AddTaskQuery", async (req, res) => {
       try {
         const data = req.query.level;
         const page = parseInt(req.query.page);
@@ -153,13 +163,13 @@ async function run() {
         }
       } catch (error) {
         console.log(
-          "All Posting Assignment Get By AllAssignment Route:",
+          "All Posting Task Get By AllTask Route:",
           error
         );
       }
     });
 
-    //  Find Posting Assignment By id to see Details at Details Route
+    //  Find Posting Task By id to see Details at Details Route
     app.get("/details/:id",verifyToken, async (req, res) => {
       try {
         const id = req.params;
@@ -168,13 +178,13 @@ async function run() {
         res.send(result);
       } catch (error) {
         console.log(
-          "Find Posting Assignment By id to see Details at Details Route:",
+          "Find Posting Task By id to see Details at Details Route:",
           error
         );
       }
     });
 
-    // update Assignment By id in Update Route
+    // update Task By id in Update Route
     app.patch("/details/:id",verifyToken, async (req, res) => {
       try {
         const id = req.params.id;
@@ -196,20 +206,20 @@ async function run() {
         const result = await AddTask.updateOne(query, updateDoc, options);
         res.send(result);
       } catch (error) {
-        console.log("update Assignment By id in Update Route Route:", error);
+        console.log("update Task By id in Update Route Route:", error);
       }
     });
 
-    // Delete Assignment By id which is pass by body in AssignmentCard Route
-    app.delete("/delete/:id",verifyToken, async (req, res) => {
+    // Delete Task By id which is pass by body in TaskCard Route
+    app.delete("/delete", async (req, res) => {
       try {
-        const id = req.params.id;
+        const id = req.query.id;
         const query = { _id: new ObjectId(id) };
         const result = await AddTask.deleteOne(query);
         res.send(result);
       } catch (error) {
         console.log(
-          "Delete Assignment By id which is pass by body in AssignmentCard Route:",
+          "Delete Task By id which is pass by body in TaskCard Route:",
           error
         );
       }
